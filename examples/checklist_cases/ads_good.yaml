@@ -1,0 +1,39 @@
+id: ads_good
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    ads:
+    - Assets/Feature/**
+    first_party:
+    - Assets/Feature/**
+  rule_packs:
+  - rewarded_ads
+files:
+  Game/Assets/Feature/Subject.cs: |
+    using System;
+    public class RewardFlow {
+        public int Coins;
+        private bool rewarded;
+        public void StartAd() { rewarded = false; }
+        public void OnAdFinished(bool success) {
+            if (!success || rewarded) return;
+            rewarded = true;
+            Coins++;
+        }
+    }
+    public class Scenario {
+        public void Run() {
+            var flow = new RewardFlow();
+            flow.StartAd();
+            flow.OnAdFinished(false);
+            flow.OnAdFinished(true);
+            flow.OnAdFinished(true);
+        }
+    }
+expected:
+  ADS_REWARD_001: PASS
+  ADS_REWARD_002: PASS
+execution:
+  entrypoint: Scenario.Run
+  assumption: Called once in this synthetic scenario.

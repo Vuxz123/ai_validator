@@ -1,0 +1,32 @@
+id: project_null
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    first_party:
+    - Assets/Feature/**
+    third_party:
+    - Assets/Vendor/**
+  rule_packs:
+  - code_impact
+execution:
+  entrypoint: Scenario.Run
+  assumption: Called once in this synthetic scenario.
+baseline_files:
+  Game/Assets/Feature/Subject.cs: "public class Profile {\n    public string Name;\n\
+    \    public int NameLength() { return Name == null ? 0 : Name.Length; }\n}\npublic\
+    \ class Scenario {\n    public int Run() { return new Profile().NameLength();\
+    \ }\n}\n"
+files:
+  Game/Assets/Feature/Subject.cs: "public class Profile {\n    public string Name;\n\
+    \    public int NameLength() { return Name.Length; }\n}\npublic class Scenario\
+    \ {\n    public int Run() { return new Profile().NameLength(); }\n}\n"
+expected:
+  status: FAIL
+  findings:
+  - file: Game/Assets/Feature/Subject.cs
+    start_line: 3
+    end_line: 3
+    ownership: first_party
+    summary_any:
+    - 'null'

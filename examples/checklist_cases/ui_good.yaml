@@ -1,0 +1,39 @@
+id: ui_good
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    ui:
+    - Assets/Feature/**
+    first_party:
+    - Assets/Feature/**
+  rule_packs:
+  - unity_lifecycle
+files:
+  Game/Assets/Feature/Subject.cs: |
+    using System;
+    public class EventHub {
+        public event Action Changed;
+        public void Raise() { if (Changed != null) Changed(); }
+    }
+    public class Screen {
+        private readonly EventHub hub;
+        public int Updates;
+        public Screen(EventHub hub) { this.hub = hub; }
+        public void OnEnable() { hub.Changed += OnChanged; }
+        public void OnDisable() { hub.Changed -= OnChanged; }
+        private void OnChanged() { Updates++; }
+    }
+    public class Scenario {
+        public void Run() {
+            var hub = new EventHub();
+            var screen = new Screen(hub);
+            screen.OnEnable(); screen.OnDisable();
+            screen.OnEnable(); hub.Raise(); screen.OnDisable();
+        }
+    }
+expected:
+  UNITY_UI_004: PASS
+execution:
+  entrypoint: Scenario.Run
+  assumption: Called once in this synthetic scenario.

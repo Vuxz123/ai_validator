@@ -1,0 +1,22 @@
+id: ads_unknown
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    ads:
+    - Assets/Feature/**
+    first_party:
+    - Assets/Feature/**
+  rule_packs:
+  - rewarded_ads
+files:
+  Game/Assets/Feature/Subject.cs: |
+    // ExternalRewardProvider is supplied by an unavailable external dependency.
+    public class RewardFlow {
+        private ExternalRewardProvider provider;
+        public RewardFlow(ExternalRewardProvider provider) { this.provider = provider; }
+        public void StartAd() { provider.ShowAndGrantReward(); }
+    }
+expected:
+  ADS_REWARD_001: UNKNOWN
+  ADS_REWARD_002: UNKNOWN

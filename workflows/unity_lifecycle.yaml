@@ -1,0 +1,27 @@
+id: unity_lifecycle
+version: 3
+triggers:
+  source_groups:
+  - ui
+checks:
+- id: UNITY_UI_004
+  executor: agent
+  severity: high
+  context:
+  - changed_code
+  - diff
+  evidence_required:
+  - Subscription and unsubscription locations, or evidence of missing cleanup.
+  objective: Listeners subscribed in OnEnable must be unsubscribed in OnDisable. Check
+    delegate identity and lifecycle paths; return UNKNOWN for missing context.
+  instructions:
+  - Trace the relevant entry point and concrete caller path.
+  - Inspect callbacks, delegate identity, early returns and lifecycle guards.
+  - Check counterexamples before deciding the verdict.
+  context_requests:
+  - Full implementations of the relevant callback and its callers.
+  - Missing dependency file/type names needed to resolve the objective.
+  verdicts:
+    pass: Supplied source establishes the objective holds on the relevant paths.
+    fail: A concrete reachable path violates the objective; cite source and guards.
+    unknown: Required source or a reachable path cannot be established.

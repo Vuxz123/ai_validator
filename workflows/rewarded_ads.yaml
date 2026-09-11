@@ -1,0 +1,48 @@
+id: rewarded_ads
+version: 3
+triggers:
+  source_groups:
+  - ads
+checks:
+- id: ADS_REWARD_001
+  executor: agent
+  severity: critical
+  context:
+  - changed_code
+  - diff
+  evidence_required:
+  - Reward grant location and callback-to-reward path, including guards.
+  objective: Reward must only be granted after a successful rewarded-ad callback.
+    Return UNKNOWN if the callback path cannot be established from supplied context.
+  instructions:
+  - Trace the relevant entry point and concrete caller path.
+  - Inspect callbacks, delegate identity, early returns and lifecycle guards.
+  - Check counterexamples before deciding the verdict.
+  context_requests:
+  - Full implementations of the relevant callback and its callers.
+  - Missing dependency file/type names needed to resolve the objective.
+  verdicts:
+    pass: Supplied source establishes the objective holds on the relevant paths.
+    fail: A concrete reachable path violates the objective; cite source and guards.
+    unknown: Required source or a reachable path cannot be established.
+- id: ADS_REWARD_002
+  executor: agent
+  severity: high
+  context:
+  - changed_code
+  - diff
+  evidence_required:
+  - Reward grant location and duplicate prevention analysis.
+  objective: A single ad attempt must not grant reward multiple times. Inspect duplicate
+    callbacks and idempotency guards; missing context means UNKNOWN.
+  instructions:
+  - Trace the relevant entry point and concrete caller path.
+  - Inspect callbacks, delegate identity, early returns and lifecycle guards.
+  - Check counterexamples before deciding the verdict.
+  context_requests:
+  - Full implementations of the relevant callback and its callers.
+  - Missing dependency file/type names needed to resolve the objective.
+  verdicts:
+    pass: Supplied source establishes the objective holds on the relevant paths.
+    fail: A concrete reachable path violates the objective; cite source and guards.
+    unknown: Required source or a reachable path cannot be established.

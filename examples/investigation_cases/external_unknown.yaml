@@ -1,0 +1,27 @@
+id: external_unknown
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    first_party:
+    - Assets/Feature/**
+    third_party:
+    - Assets/Vendor/**
+  rule_packs:
+  - code_impact
+execution:
+  entrypoint: Scenario.Run
+  assumption: Called once after Source is assigned a non-null external implementation
+    of IProfileSource. The implementation and its return-value contract are not included.
+baseline_files:
+  Game/Assets/Feature/Subject.cs: "public interface IProfileSource {\n    string LoadName();\n\
+    }\npublic class Scenario {\n    public IProfileSource Source;\n    public int\
+    \ Run() {\n        var name = Source.LoadName();\n        return 0;\n    }\n}\n"
+files:
+  Game/Assets/Feature/Subject.cs: "public interface IProfileSource {\n    string LoadName();\n\
+    }\npublic class Scenario {\n    public IProfileSource Source;\n    public int\
+    \ Run() {\n        var name = Source.LoadName();\n        return name.Length;\n\
+    \    }\n}\n"
+expected:
+  status: UNKNOWN
+  findings: []

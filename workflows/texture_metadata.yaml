@@ -1,0 +1,43 @@
+id: texture_metadata
+version: 1
+triggers:
+  changed_paths:
+    - Assets/*.[pP][nN][gG]
+    - Assets/*.[pP][nN][gG].meta
+    - Assets/*.[jJ][pP][gG]
+    - Assets/*.[jJ][pP][gG].meta
+    - Assets/*.[jJ][pP][eE][gG]
+    - Assets/*.[jJ][pP][eE][gG].meta
+    - Assets/*.[tT][gG][aA]
+    - Assets/*.[tT][gG][aA].meta
+    - Assets/*.[pP][sS][dD]
+    - Assets/*.[pP][sS][dD].meta
+    - Assets/*.[tT][iI][fF]
+    - Assets/*.[tT][iI][fF].meta
+    - Assets/*.[tT][iI][fF][fF]
+    - Assets/*.[tT][iI][fF][fF].meta
+    - Assets/*.[bB][mM][pP]
+    - Assets/*.[bB][mM][pP].meta
+    - Assets/*.[eE][xX][rR]
+    - Assets/*.[eE][xX][rR].meta
+    - Assets/*.[hH][dD][rR]
+    - Assets/*.[hH][dD][rR].meta
+    - Assets/*.[gG][iI][fF]
+    - Assets/*.[gG][iI][fF].meta
+    - Assets/*.[iI][fF][fF]
+    - Assets/*.[iI][fF][fF].meta
+    - Assets/*.[pP][iI][cC][tT]
+    - Assets/*.[pP][iI][cC][tT].meta
+checks:
+  - id: TEXTURE_META_001
+    description: Texture and companion .meta must both exist or both be removed at target.
+    executor: texture_pairs
+    severity: high
+  - id: TEXTURE_GUID_001
+    description: GUID must be valid and remain stable for an existing texture at the same path.
+    executor: texture_guid
+    severity: high
+  - id: TEXTURE_IMPORT_001
+    description: Metadata must parse without conflict markers and contain a TextureImporter mapping.
+    executor: texture_importer
+    severity: high

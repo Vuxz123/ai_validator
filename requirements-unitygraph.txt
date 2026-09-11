@@ -1,0 +1,3 @@
+# Optional feasibility probe; core validator does not import UnityGraph.
+unitygraph==2.1.4
+mcp>=1.12,<2

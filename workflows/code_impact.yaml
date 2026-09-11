@@ -1,0 +1,14 @@
+id: code_impact
+version: 5
+triggers:
+  changed_paths:
+    - Assets/*.cs
+    - Packages/*.cs
+checks:
+  - id: CODE_IMPACT_001
+    description: Assess behavioral impact of the C# delta on callers, serialized assets and lifecycle. Use graph hints and caller search when supplied, verify relationships against source and namespaces, and identify focused regression tests. Missing context or unresolved impact means UNKNOWN; report FAIL only for a concrete defect with a reachable path.
+    executor: investigation
+    severity: high
+    context: [changed_code, diff]
+    evidence_required:
+      - Target source location, affected caller or asset path, behavior and guards supporting the assessment.

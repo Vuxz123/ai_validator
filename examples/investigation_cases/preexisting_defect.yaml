@@ -1,0 +1,35 @@
+id: preexisting_defect
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    first_party:
+    - Assets/Feature/**
+    third_party:
+    - Assets/Vendor/**
+  rule_packs:
+  - code_impact
+execution:
+  entrypoint: Scenario.Run
+  assumption: Called once. This is the only external entrypoint in this closed synthetic
+    program; no reflection, dynamic dispatch or other external calls occur.
+baseline_files:
+  Game/Assets/Feature/Subject.cs: |
+    public class LegacyProfile {
+        public string Name;
+        public int ReadLength() { return Name.Length; }
+    }
+  Game/Assets/Feature/Scenario.cs: |
+    public class Scenario {
+        public int Run() { return new LegacyProfile().ReadLength(); }
+    }
+files:
+  Game/Assets/Feature/Subject.cs: |
+    public class LegacyProfile {
+        public string Name;
+        public const int DisplayWidth = 20;
+        public int ReadLength() { return Name.Length; }
+    }
+expected:
+  status: PASS
+  findings: []

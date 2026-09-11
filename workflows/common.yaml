@@ -1,0 +1,9 @@
+id: common
+version: 1
+triggers:
+  always: true
+checks:
+  - id: GIT_SNAPSHOT_001
+    description: Read the frozen baseline and target trees successfully.
+    executor: git_snapshot
+    severity: low

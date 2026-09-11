@@ -1,0 +1,42 @@
+id: sdk_callback
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    first_party:
+    - Assets/Feature/**
+    third_party:
+    - Assets/Vendor/**
+  rule_packs:
+  - code_impact
+execution:
+  entrypoint: Scenario.Run
+  assumption: Called once in this synthetic scenario.
+baseline_files:
+  Game/Assets/Vendor/Factory.cs: "using System;\npublic static class Factory {\n \
+    \   public static void Create(bool editor, Action<string> done) {\n        if\
+    \ (editor) { done(\"dummy\"); return; }\n        done(\"device\");\n    }\n}\n"
+  Game/Assets/Feature/Scenario.cs: "public class Scenario {\n    public int Run()\
+    \ {\n        int callbacks = 0;\n        Factory.Create(true, value => callbacks++);\n\
+    \        if (callbacks != 1) throw new System.InvalidOperationException(\"Expected\
+    \ one completion\");\n        return callbacks;\n    }\n}\n"
+files:
+  Game/Assets/Vendor/Factory.cs: "using System;\npublic static class Factory {\n \
+    \   public static void Create(bool editor, Action<string> done) {\n        if\
+    \ (editor) { done(\"dummy\"); }\n        done(\"device\");\n    }\n}\n"
+  Game/Assets/Feature/Scenario.cs: "public class Scenario {\n    public int Run()\
+    \ {\n        int callbacks = 0;\n        Factory.Create(true, value => callbacks++);\n\
+    \        if (callbacks != 1) throw new System.InvalidOperationException(\"Expected\
+    \ one completion\");\n        return callbacks;\n    }\n}\n"
+expected:
+  status: FAIL
+  findings:
+  - file: Game/Assets/Vendor/Factory.cs
+    start_line: 4
+    end_line: 5
+    ownership: third_party
+    summary_any:
+    - twice
+    - two
+    - double
+    - callback

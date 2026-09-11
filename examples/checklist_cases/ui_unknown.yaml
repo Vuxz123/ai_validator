@@ -1,0 +1,23 @@
+id: ui_unknown
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    ui:
+    - Assets/Feature/**
+    first_party:
+    - Assets/Feature/**
+  rule_packs:
+  - unity_lifecycle
+files:
+  Game/Assets/Feature/Subject.cs: |
+    // ExternalSubscriptionScope implementation is not available in this snapshot.
+    public class Screen {
+        private readonly ExternalSubscriptionScope scope;
+        public Screen(ExternalSubscriptionScope scope) { this.scope = scope; }
+        public void OnEnable() { scope.Subscribe(OnChanged); }
+        public void OnDisable() { scope.Release(); }
+        private void OnChanged() { }
+    }
+expected:
+  UNITY_UI_004: UNKNOWN

@@ -1,0 +1,18 @@
+# Example mapping: adapt these paths to each game. Paths are Unity-relative.
+version: 1
+# Git-relative Unity directory; use Game or similar for nested projects.
+unity_root: .
+investigation:
+  max_rounds: 6
+  verify_reserve_seconds: 120
+source_groups:
+  first_party: [Assets/Game/**]
+  third_party: [Assets/Vendors/**]
+  ads: [Assets/Game/Monetization/**]
+  ui: [Assets/Game/UI/**]
+# Pack IDs correspond to workflow YAML IDs. Common is always included.
+rule_packs:
+  - texture_metadata
+  - rewarded_ads
+  - unity_lifecycle
+  - code_impact

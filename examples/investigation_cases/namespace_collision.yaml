@@ -1,0 +1,43 @@
+id: namespace_collision
+project:
+  version: 1
+  unity_root: Game
+  source_groups:
+    first_party:
+    - Assets/Feature/**
+    third_party:
+    - Assets/Vendor/**
+  rule_packs:
+  - code_impact
+execution:
+  entrypoint: Scenario.Run
+  assumption: Called once. This is the only external entrypoint in this closed synthetic
+    program; no reflection, dynamic dispatch or other external calls occur.
+baseline_files:
+  Game/Assets/Feature/Subject.cs: |
+    namespace Feature {
+        public static class Formatter {
+            public static int Length(string value) { return value == null ? 0 : value.Length; }
+        }
+    }
+  Game/Assets/Vendor/Formatter.cs: |
+    namespace Vendor {
+        public static class Formatter {
+            public static int Length(string value) { return value == null ? 0 : value.Length; }
+        }
+    }
+  Game/Assets/Feature/Scenario.cs: |
+    using ActiveFormatter = Feature.Formatter;
+    public class Scenario {
+        public int Run() { return ActiveFormatter.Length(null); }
+    }
+files:
+  Game/Assets/Vendor/Formatter.cs: |
+    namespace Vendor {
+        public static class Formatter {
+            public static int Length(string value) { return value.Length; }
+        }
+    }
+expected:
+  status: PASS
+  findings: []

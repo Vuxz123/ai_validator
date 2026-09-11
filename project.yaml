@@ -1,0 +1,35 @@
+# StuffSort mapping only; reusable rules remain in workflows/.
+version: 1
+unity_root: StuffSort3d
+investigation:
+  max_rounds: 6
+  verify_reserve_seconds: 120
+source_groups:
+  first_party:
+    - Assets/_Game/**
+    - Assets/BravestarsSDK/**
+    - Assets/ZeroX/**
+  # Explicit known vendors; unlisted paths retain unknown ownership.
+  third_party:
+    - Assets/GooglePlayGames/**
+    - Assets/GoogleMobileAds/**
+    - Assets/MaxSdk/**
+    - Assets/AppsFlyer/**
+    - Assets/Firebase/**
+    - Assets/FacebookSDK/**
+    - Assets/ExternalDependencyManager/**
+  ads:
+    - Assets/BravestarsSDK/Scripts/Mediation/**
+    - Assets/BravestarsSDK/Scripts/NewSDK/**
+    # Broad caller coverage: reward requests also live in screens and gameplay.
+    - Assets/_Game/Scripts/GUI/**
+    - Assets/_Game/Scripts/GamePlayUnit/**
+  ui:
+    - Assets/_Game/Scripts/GUI/**
+    - Assets/_Game/Scripts/UI/**
+    - Assets/ZeroX/UI/**
+rule_packs:
+  - texture_metadata
+  - rewarded_ads
+  - unity_lifecycle
+  - code_impact
